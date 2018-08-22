@@ -1,19 +1,20 @@
 package com.lvxz.app.warehouse;
 
+import android.content.DialogInterface;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
+import android.widget.Toast;
+import android.app.AlertDialog;
 
 import com.google.gson.Gson;
 import com.lvxz.app.warehouse.dto.ResponseDTO;
 
-
+import android.widget.EditText;
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private static final String TAG = "MainActivity";
+    private static String IPstring = "192.168.2.107";
 
 
 
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         RequestBody body = RequestBody.create(mediaTypeJSON, jsonStr);
 
         Request request = new Request.Builder()//创建Request 对象。
-                .url("http://192.168.2.107:9000/dispatch/" + URLstring)
+                .url("http://"+ IPstring +":9000/dispatch/" + URLstring)
                 .post(body)//传递请求体
                 .build();
 
@@ -131,6 +133,28 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private EditText editTextIP;
+    /**改变IP选择键响应**/
+    public void IP_address(View view){
+        AlertDialog.Builder builder = new  AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("IP地址"+IPstring+" 需要改变吗？");
+        builder.setIcon(android.R.drawable.ic_dialog_info);
+        EditText editText_ip = new EditText(MainActivity.this);
+        builder.setView(editText_ip);
+
+        editTextIP = editText_ip;
+
+        builder.setPositiveButton("确定" ,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        IPstring = editTextIP.getText().toString();
+                    }
+                })
+                .setNegativeButton("取消" , null)
+                .show();
     }
 
 
