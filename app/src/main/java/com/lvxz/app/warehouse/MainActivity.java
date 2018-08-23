@@ -96,23 +96,27 @@ public class MainActivity extends AppCompatActivity {
     private void postDataAsync(String URLstring, String jsonStr) {
         OkHttpClient client = new OkHttpClient();//创建OkHttpClient对象。
 
+        System.out.println("----------------------");
         MediaType mediaTypeJSON = MediaType.parse("application/json; charset=utf-8");//数据类型为json格式，
         //String jsonStr = "{\"employeeId\":\"150804213\",\"password\":\"1234\",\"formID\":\"in1234\"}";//json数据.
         RequestBody body = RequestBody.create(mediaTypeJSON, jsonStr);
 
         Request request = new Request.Builder()//创建Request 对象。
-                .url("http://192.168.2.107:9000/dispatch/" + URLstring)
+                .url("http://192.168.2.108:9000/dispatch/" + URLstring)
                 .post(body)//传递请求体
                 .build();
+
 
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                System.out.println("--------------失败了-----");
 
 
             }
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                System.out.println("--------------00000000--------");
                 if(response.isSuccessful()){//回调的方法执行在子线程。
                     //Toast.makeText(MainActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                     Log.d(TAG,"获取数据成功了");
